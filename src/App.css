@@ -1,0 +1,33 @@
+
+h1 {
+    text-align: center;
+}
+
+.h2 {
+
+}
+
+.region-africa {
+    color: darkblue;
+}
+
+.region-americas {
+    color: green;
+}
+
+.region-asia {
+    color: red;
+}
+
+.region-europe {
+    color: yellow;
+}
+
+.region-oceania {
+    color: rebeccapurple;
+}
+
+.region-default {
+    color: dimgrey;
+}
+
