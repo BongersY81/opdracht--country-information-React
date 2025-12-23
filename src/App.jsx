@@ -10,7 +10,7 @@ function App() {
     const [worldMap, setWorldMap] = useState([]);
     const [error, toggleError] = useState(false);
     const [loading, toggleLoading] = useState(false);
-    // const [searchQuery, setSearchQuery] = useState("");
+    const [searchQuery, setSearchQuery] = useState("");
     const [countryFound, setCountryFound] = useState([]);
 
     async function countriesData() {
@@ -29,14 +29,14 @@ function App() {
 
     }
 
-    // function HandleSubmit(event) {
-    // event.preventDefault();
 
-    async function countryInformation() {
+    async function handleSubmit(event) {
+        event.preventDefault();
+
         toggleLoading(true)
         try {
             const result = await
-                axios.get(`https://restcountries.com/v3.1/name/the netherlands`);
+                axios.get(`https://restcountries.com/v3.1/name/${searchQuery}`);
             console.log(result.data);
             setCountryFound(result.data);
         } catch (error) {
@@ -47,6 +47,21 @@ function App() {
         }
     }
 
+    // async function countryInformation() {
+    //     toggleLoading(true)
+    //     try {
+    //         const result = await
+    //             axios.get(`https://restcountries.com/v3.1/name/${searchQuery}`);
+    //         console.log(result.data);
+    //         setCountryFound(result.data);
+    //     } catch (error) {
+    //         console.log(error);
+    //         toggleError(true);
+    //     } finally {
+    //         toggleLoading(false);
+    //     }
+    // }
+
 
     return (
         <>
@@ -54,23 +69,24 @@ function App() {
             <header>
                 <img src={world_map} alt="world map"/>
             </header>
-            <h1>World Map</h1>
-            <div className="button-class">
+            <h1>World Regions</h1>
+            <div className="button-data">
+
+                <button type="button" onClick={countriesData} disabled={loading === true}>Haal landen op</button>
+
+                {error && <p className="error-message">Er is iets misgegaan. Probeer het nog eens opnieuw.</p>}
+                {loading && <p className="loading-countries">De informatie wordt opgehaald</p>}
             </div>
-            <button type="button" onClick={countriesData} disabled={loading === true}>Haal landen op</button>
-            {error && <p className="error-message">Er is iets misgegaan. Probeer het nog eens opnieuw.</p>}
-            {loading && <p className="loading-countries">De informatie wordt opgehaald</p>}
-
-
+            <h2> Search country information</h2>
             <ul>
                 {worldMap.length > 0 &&
                     worldMap.sort((a, b) => (a?.population || 0) - (b?.population || 0))
                         .map((country) => {
                             return (<li key={country?.name?.common}>
                                     <img src={country?.flags?.png} alt={country?.flags?.alt}/>
-                                    <h2 className={regionName(country?.region)}>
+                                    <h3 className={regionName(country?.region)}>
                                         {country?.name?.common}
-                                    </h2>
+                                    </h3>
                                     <p>{`Has a population of ${country?.population} people`}</p>
                                 </li>
 
@@ -78,23 +94,46 @@ function App() {
                         })}
             </ul>
 
-            <button type="button" onClick={countryInformation} disabled={loading === true}>Haal land op</button>
-            {error && <p className="error-message">Er is iets misgegaan. Probeer het nog eens opnieuw.</p>}
-            {loading && <p className="loading-countries">De informatie wordt opgehaald</p>}
 
-            {countryFound.length > 0 &&
-            countryFound.map(country => (
-                <li key={country?.name?.common}>
-                    <h2>{country?.name?.common}</h2>
-                    <img src={country?.flags?.png} alt={country?.flags?.alt}/>
-                    <p>{`${country?.name?.common} is situated in ${country?.subregion} and the capital is ${country?.capital?.[0]}`}</p>
-                </li>
-                ))
+            <article className="button-information">
+            <form onSubmit={handleSubmit}>
+                    <input
+                        type="search"
+                        id="form-search-input"
+                        name="search-input"
+                        value={searchQuery}
+                        placeholder="Bijvoorbeeld Nederland of Peru"
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                    />
 
-            }
+                    <button type="submit"  disabled={loading === true}>Zoek</button>
+                    {error && <p className="error-message">Er is iets misgegaan. Probeer het nog eens opnieuw.</p>}
+                    {loading && <p className="loading-countries">De informatie wordt opgehaald</p>}
+
+            </form>
+            </article>
+
+
+                {countryFound.length > 0 && (
+                    <ul>
+                        <article className="country-information">
+                        {countryFound.map(country => (
+                        <li key={country?.name?.common}>
+                            <h2>{country?.name?.common}</h2>
+                            <img src={country?.flags?.png} alt={country?.flags?.alt}/>
+                            <p>{`${country?.name?.common} is situated in ${country?.subregion} and the capital is ${country?.capital?.[0]}`}</p>
+                            <p>{`It has a population of ${roundToMillions(country?.population)}  people and borders with ${country?.borders} neighboring countries.`}</p>
+                            <p>{`website can be found on.NL domain's`}</p>
+                        </li>
+                    ))}
+                        </article>
+                    </ul>
+                    )}
+
+
 
         </>
-    )
+    );
 }
 
 

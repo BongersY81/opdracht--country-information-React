@@ -3,9 +3,11 @@ h1 {
     text-align: center;
 }
 
-.h2 {
 
 
+
+h2 {
+    text-align: center;
 }
 
 .region-africa {
@@ -33,13 +35,27 @@ h1 {
     color: dimgrey;
 }
 
-img {
+ul {
     display:flex;
     flex-wrap: wrap;
     width: 100px;
     height: auto;
 
 }
-.button-class
+.button-data {
+    display: flex;
+  justify-content: center;
 
 
+}
+
+.button-information {
+    display: flex;
+    justify-content: center;
+
+}
+.country-information {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+}
