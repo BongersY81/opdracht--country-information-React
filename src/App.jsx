@@ -34,11 +34,14 @@ function App() {
         event.preventDefault();
 
         toggleLoading(true)
+
         try {
             const result = await
                 axios.get(`https://restcountries.com/v3.1/name/${searchQuery}`);
             console.log(result.data);
             setCountryFound(result.data);
+            setSearchQuery("");
+         toggleError(false)
         } catch (error) {
             console.log(error);
             toggleError(true);
@@ -46,21 +49,6 @@ function App() {
             toggleLoading(false);
         }
     }
-
-    // async function countryInformation() {
-    //     toggleLoading(true)
-    //     try {
-    //         const result = await
-    //             axios.get(`https://restcountries.com/v3.1/name/${searchQuery}`);
-    //         console.log(result.data);
-    //         setCountryFound(result.data);
-    //     } catch (error) {
-    //         console.log(error);
-    //         toggleError(true);
-    //     } finally {
-    //         toggleLoading(false);
-    //     }
-    // }
 
 
     return (
@@ -77,8 +65,10 @@ function App() {
                 {error && <p className="error-message">Er is iets misgegaan. Probeer het nog eens opnieuw.</p>}
                 {loading && <p className="loading-countries">De informatie wordt opgehaald</p>}
             </div>
+
             <h2> Search country information</h2>
-            <ul>
+
+            <ul className="country-flag">
                 {worldMap.length > 0 &&
                     worldMap.sort((a, b) => (a?.population || 0) - (b?.population || 0))
                         .map((country) => {
@@ -96,7 +86,7 @@ function App() {
 
 
             <article className="button-information">
-            <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit}>
                     <input
                         type="search"
                         id="form-search-input"
@@ -106,30 +96,37 @@ function App() {
                         onChange={(e) => setSearchQuery(e.target.value)}
                     />
 
-                    <button type="submit"  disabled={loading === true}>Zoek</button>
-                    {error && <p className="error-message">Er is iets misgegaan. Probeer het nog eens opnieuw.</p>}
-                    {loading && <p className="loading-countries">De informatie wordt opgehaald</p>}
+                    <div className="search-button">
+                        <button type="submit" disabled={loading === true}>Zoek</button>
 
-            </form>
+                        {error && <p className="error-message">Er is iets misgegaan. Probeer het nog eens opnieuw.</p>}
+                        {loading && <p className="loading-countries">De informatie wordt opgehaald</p>}
+                    </div>
+                </form>
             </article>
 
 
-                {countryFound.length > 0 && (
-                    <ul>
-                        <article className="country-information">
-                        {countryFound.map(country => (
-                        <li key={country?.name?.common}>
-                            <h2>{country?.name?.common}</h2>
-                            <img src={country?.flags?.png} alt={country?.flags?.alt}/>
-                            <p>{`${country?.name?.common} is situated in ${country?.subregion} and the capital is ${country?.capital?.[0]}`}</p>
-                            <p>{`It has a population of ${roundToMillions(country?.population)}  people and borders with ${country?.borders} neighboring countries.`}</p>
-                            <p>{`website can be found on.NL domain's`}</p>
-                        </li>
-                    ))}
-                        </article>
-                    </ul>
-                    )}
+            {countryFound.length > 0 && (
+                <ul className="country-information">
 
+                    {countryFound.map(country => (
+
+                        <li key={country?.name?.common}>
+                            <article className="country-list">
+                                <h2>{country?.name?.common}</h2>
+                                <div className="country-image">
+                                <img src={country?.flags?.png} alt={country?.flags?.alt}/>
+                                </div>
+                                <p>{`${country?.name?.common} is situated in ${country?.subregion} and the capital is ${country?.capital?.[0]}`}</p>
+                                <p>{`It has a population of ${roundToMillions(country?.population)}  people and borders with ${country?.borders} neighboring countries.`}</p>
+                                <p>{`website can be found on ${country?.tld} domain's`}</p>
+                            </article>
+                        </li>
+
+                    ))}
+
+                </ul>
+            )}
 
 
         </>

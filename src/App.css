@@ -3,11 +3,15 @@ h1 {
     text-align: center;
 }
 
-
-
+header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 h2 {
     text-align: center;
+    margin-bottom: 2em;
 }
 
 .region-africa {
@@ -35,27 +39,62 @@ h2 {
     color: dimgrey;
 }
 
-ul {
-    display:flex;
+.country-flag {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     flex-wrap: wrap;
-    width: 100px;
+    gap: 16px;
+    list-style: none;
+}
+
+img {
     height: auto;
+    width: 20%;
 
 }
+
 .button-data {
     display: flex;
-  justify-content: center;
-
+    justify-content: center;
+    align-items: center;
 
 }
 
 .button-information {
     display: flex;
     justify-content: center;
-
+    align-items: center;
+    gap: 12px;
 }
-.country-information {
+
+input {
+    width: 300px;
+    background-color: rosybrown ;
+    border-radius: 400px;
+    padding: 16px 24px;
+    border: none
+}
+
+.search-button {
     display: flex;
+    flex-direction: row;
     justify-content: center;
+    align-items: center;
+    padding: 10px;
+    width: 25px;
+}
+
+.country-information {
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
     list-style: none;
 }
+
+
+
+
+
